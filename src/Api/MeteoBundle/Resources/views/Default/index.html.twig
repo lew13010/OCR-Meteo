@@ -1,0 +1,41 @@
+{% extends 'ApiMeteoBundle::layout.html.twig' %}
+
+{% block body %}
+    <p>
+        <button data-url="{{ path('api_meteo_view_geo', {'latitude' : "latitude", 'longitude' : "longitude" }) }}" onClick="gps(this.getAttribute('data-url'));" >Utiliser ma GeoLocalisation</button>
+    </p>
+    <form action="{{ path('api_meteo_view_name') }}" method="post">
+        <label for="city">Ville</label>
+        <input type="text" id="city" name="city">
+        <input type="submit" value="Entrer">
+    </form>
+    <ul>
+        {% for city in cities %}
+            <li><a href="{{ path('api_meteo_view_id', {'city': city.id}) }}">{{ city.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <script type="text/javascript">
+        function gps(link){
+            if (navigator.geolocation) //tu vérifies la disponibilité de la géo
+            {
+                navigator.geolocation.getCurrentPosition( //tu lances la géo qui va vérifier si l'utilisateur est d'accord
+                        function(position) //l'utilisateur est ok, donc cette fonction est exécutée, son premier paramètre est un objet position
+                        {
+                            var latitude = position.coords.latitude; //tu récupère la latitude
+                            var longitude = position.coords.longitude; //tu récupère la longitude
+
+                            link = link.replace('latitude',latitude);
+                            link = link.replace('longitude',longitude);
+                            //ci dessous, tu demande au navigateur de modifier sa source avec
+                            window.location.replace(link);
+                        }
+                );
+            }
+            else{
+                alert("Votre navigateur ne prend pas en compte la géolocalisation HTML5");
+            }
+        }
+    </script>
+{% endblock %}
+

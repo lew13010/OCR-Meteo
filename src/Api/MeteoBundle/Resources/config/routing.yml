@@ -1,0 +1,15 @@
+api_meteo_homepage:
+    path:     /
+    defaults: { _controller: ApiMeteoBundle:Default:index }
+
+api_meteo_view_id:
+    path:     /meteo/{city}
+    defaults: { _controller: ApiMeteoBundle:Default:viewId }
+
+api_meteo_view_name:
+    path:     /meteo
+    defaults: { _controller: ApiMeteoBundle:Default:viewName }
+
+api_meteo_view_geo:
+    path:     /geoloc/lat={latitude}-lon={longitude}
+    defaults: { _controller: ApiMeteoBundle:Default:viewGeo }

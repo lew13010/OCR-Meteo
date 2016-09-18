@@ -1,0 +1,90 @@
+{% extends '::base.html.twig' %}
+
+{% block style %}
+    {% for i in 0..4 %}
+        {% if json.list[i].weather.0.main == 'Rain'%}
+            .a{{ i }}::after {
+                content: url('/images/pluie.jpg');
+            }
+        {% endif %}
+        {% if json.list[i].weather.0.main == 'Clear'%}
+            .a{{ i }}::after {
+                content: url('/images/soleil.png');
+            }
+        {% endif %}
+        {% if json.list[i].weather.0.main == 'Clouds'%}
+            .a{{ i }}::after {
+                content: url('/images/nuage.png');
+            }
+        {% endif %}
+    {% endfor %}
+    p{
+        margin: 14px 0;
+    }
+    .onglet{
+        margin: 100px;
+    }
+{% endblock %}
+
+{% block body %}
+    <div class="onglet">
+        <h1>{% if ville is defined %}{{ ville|capitalize }}{% else %}{{ city.name }}{% endif %}</h1>
+        <div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="1 active"><a href="#today" aria-controls="home" role="tab" data-toggle="tab">Aujourd'hui</a></li>
+                <li role="presentation"><a href="#demain" aria-controls="profile" role="tab" data-toggle="tab">Demain</a></li>
+                <li role="presentation"><a href="#j2" aria-controls="messages" role="tab" data-toggle="tab">J+2</a></li>
+                <li role="presentation"><a href="#j3" aria-controls="settings" role="tab" data-toggle="tab">J+3</a></li>
+                <li role="presentation"><a href="#j4" aria-controls="settings" role="tab" data-toggle="tab">J+4</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="today">
+                    <div class="a0 pull-right"></div>
+                    <p>Ciel : <span id="description">{{ json.list.0.weather.0.description }}</span></p>
+                    <p>Température : <span id="temperature">{{ json.list.0.temp.day }}</span>°C</p>
+                    <p>Humidité : <span id="humidite">{{ json.list.0.humidity }}</span> %</p>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="demain">
+                    <div class="a1 pull-right"></div>
+                    <p>Ciel : <span id="description">{{ json.list.1.weather.0.description }}</span></p>
+                    <p>Température : <span id="temperature">{{ json.list.1.temp.day }}</span>°C</p>
+                    <p>Humidité : <span id="humidite">{{ json.list.1.humidity }}</span> %</p>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="j2">
+                    <div class="a2 pull-right"></div>
+                    <p>Ciel : <span id="description">{{ json.list.2.weather.0.description }}</span></p>
+                    <p>Température : <span id="temperature">{{ json.list.2.temp.day }}</span>°C</p>
+                    <p>Humidité : <span id="humidite">{{ json.list.2.humidity }}</span> %</p>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="j3">
+                    <div class="a3 pull-right"></div>
+                    <p>Ciel : <span id="description">{{ json.list.3.weather.0.description }}</span></p>
+                    <p>Température : <span id="temperature">{{ json.list.3.temp.day }}</span>°C</p>
+                    <p>Humidité : <span id="humidite">{{ json.list.3.humidity }}</span> %</p>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="j4">
+                    <div class="a4 pull-right"></div>
+                    <p>Ciel : <span id="description">{{ json.list.4.weather.0.description }}</span></p>
+                    <p>Température : <span id="temperature">{{ json.list.4.temp.day }}</span>°C</p>
+                    <p>Humidité : <span id="humidite">{{ json.list.4.humidity }}</span> %</p>
+                </div>
+            </div>
+
+        </div>
+        <p><a href="{{ path('api_meteo_homepage') }}">Retour à l'accueil</a></p>
+    </div>
+    <script>
+        $('#myTabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+        $('#myTabs a[href="#profile"]').tab('show') // Select tab by name
+        $('#myTabs a:first').tab('show') // Select first tab
+        $('#myTabs a:last').tab('show') // Select last tab
+        $('#myTabs li:eq(2) a').tab('show') // Select third tab (0-indexed)
+    </script>
+{% endblock %}
