@@ -3,7 +3,15 @@
 
 ## Installation
 
+#### Composer 
 
+```composer require lew/meteobundle```
+
+#### Database
+
+```doctrine:database:create```
+
+```doctrine:schema:update --force```
 
 ## Configuration
 
