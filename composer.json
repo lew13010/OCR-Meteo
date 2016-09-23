@@ -1,5 +1,5 @@
 {
-    "name": "lew/meteoBundle",
+    "name": "lew/meteobundle",
     "type": "Project",
     "description": "Application Meteo",
     "autoload": {
