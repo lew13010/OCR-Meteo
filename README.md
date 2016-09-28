@@ -19,10 +19,6 @@ doctrine:database:create
 doctrine:schema:update --force
 ```
 
-#### Cache
-
-For to use the cache just create folder */app/cache*
-
 ## Configuration
 
 Add these lines in your file *config/parameters.yml* with your choices :

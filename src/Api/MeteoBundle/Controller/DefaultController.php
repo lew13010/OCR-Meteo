@@ -73,7 +73,7 @@ class DefaultController extends Controller
 
         $name = $city->getName();
 
-        $fichiers = scandir($this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache');
+        $fichiers = scandir($this->get('kernel')->getCacheDir());
         foreach ($fichiers as $fichier){
             parse_str($fichier);
             if(isset($v) && ($v === $city->getName())){
@@ -82,7 +82,7 @@ class DefaultController extends Controller
         }
 
        // Reccupération de la route du cache
-        $filename = $this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $name;
+        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $name;
 
         //si le fichier existe
         if(file_exists($filename)){
@@ -129,7 +129,7 @@ class DefaultController extends Controller
 
         $name = $ville;
 
-        $fichiers = scandir($this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache');
+        $fichiers = scandir($this->get('kernel')->getCacheDir());
         foreach ($fichiers as $fichier){
             parse_str($fichier);
             if(isset($v) && $v === $ville){
@@ -138,7 +138,7 @@ class DefaultController extends Controller
         }
 
         // Reccupération de la route du cache
-        $filename = $this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $name;
+        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $name;
 
         if(file_exists($filename)){
             $file = unserialize(file_get_contents($filename));
@@ -185,7 +185,7 @@ class DefaultController extends Controller
 
         $name = 'qsdfboqsdf';
 
-        $fichiers = scandir($this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache');
+        $fichiers = scandir($this->get('kernel')->getCacheDir());
         foreach ($fichiers as $fichier){
             parse_str($fichier);
             if(isset($lat) && $lat >= ($latitudeClean - 0.01) && $lat <= ($latitudeClean + 0.01) && $lon >= ($longitudeClean - 0.01) && $lon <= ($longitudeClean + 0.01)){
@@ -194,7 +194,7 @@ class DefaultController extends Controller
         }
 
         // Reccupération de la route du cache
-        $filename = $this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $name;
+        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $name;
 
         if(file_exists($filename)){
             $file = unserialize(file_get_contents($filename));
@@ -237,7 +237,7 @@ class DefaultController extends Controller
 
     public function createCache($city, $content, $lat, $lon)
     {
-        $filename = $this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'v=' . $city . '&lat=' . $lat . '&lon=' . $lon;
+        $filename = $this->get('kernel')->getCacheDir() . DIRECTORY_SEPARATOR . 'v=' . $city . '&lat=' . $lat . '&lon=' . $lon;
         $date = new \DateTime();
         $file = array(
             'date'      => $date,
@@ -249,7 +249,7 @@ class DefaultController extends Controller
 
     public function updateeCache($city, $content)
     {
-        $filename = $this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $city;
+        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $city;
         $date = new \DateTime();
         $file = file_get_contents($filename);
 
