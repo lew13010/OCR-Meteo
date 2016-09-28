@@ -4,17 +4,17 @@
     {% for i in 0..4 %}
         {% if json.list[i].weather.0.main == 'Rain'%}
             .a{{ i }}::after {
-                content: url('/images/pluie.jpg');
+                content: url('{{ asset('images/pluie.jpg') }}');
             }
         {% endif %}
         {% if json.list[i].weather.0.main == 'Clear'%}
             .a{{ i }}::after {
-                content: url('/images/soleil.png');
+                content: url('{{ asset('images/soleil.png') }}');
             }
         {% endif %}
         {% if json.list[i].weather.0.main == 'Clouds'%}
             .a{{ i }}::after {
-                content: url('/images/nuage.png');
+                content: url('{{ asset('images/nuage.png') }}');
             }
         {% endif %}
     {% endfor %}

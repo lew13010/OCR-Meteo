@@ -19,6 +19,13 @@ doctrine:database:create
 doctrine:schema:update --force
 ```
 
+#### Assets
+
+```
+assets:install --symlink 
+```
+
+
 ## Configuration
 
 Add these lines in your file *config/parameters.yml* with your choices :
