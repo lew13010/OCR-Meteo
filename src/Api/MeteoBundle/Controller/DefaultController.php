@@ -71,7 +71,7 @@ class DefaultController extends Controller
 
         $url = 'http://api.openweathermap.org/data/2.5/forecast/daily?id='.$city->getCityId().'&cnt=5&APPID='.$apiId.'&lang='.$langs.'&units='.$units;
 
-        $name = $city;
+        $name = $city->getName();
 
         $fichiers = scandir($this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache');
         foreach ($fichiers as $fichier){
@@ -95,7 +95,7 @@ class DefaultController extends Controller
 
                 $lat = round($json['city']['coord']['lat'], 2);
                 $lon = round($json['city']['coord']['lon'], 2);
-                $this->createCache($city, $content, $lat, $lon);
+                $this->createCache($city->getName(), $content, $lat, $lon);
 
             }//si + de 3h on le recrée
             else{
@@ -237,7 +237,7 @@ class DefaultController extends Controller
 
     public function createCache($city, $content, $lat, $lon)
     {
-        $filename = $this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'v=' . $city. '&lat=' . $lat . '&lon=' . $lon;
+        $filename = $this->get('kernel')->getRootDir(). DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'v=' . $city . '&lat=' . $lat . '&lon=' . $lon;
         $date = new \DateTime();
         $file = array(
             'date'      => $date,
