@@ -5,7 +5,9 @@
 
 #### Composer 
 
-```composer require lew/meteobundle```
+```
+composer require lew/meteobundle
+```
 
 #### Database
 
