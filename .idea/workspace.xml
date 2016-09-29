@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="599a09a8-81bf-4681-a87e-46b53f81c874" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Api/MeteoBundle/Tests/Controller/DefaultControllerTest.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/AppBundle/Controller/DefaultControllerTest.php" afterPath="" />
     </list>
     <ignored path="OCR-Meteo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -412,7 +412,7 @@
       <option name="presentableId" value="Default" />
       <updated>1475075110399</updated>
       <workItem from="1475075111841" duration="685000" />
-      <workItem from="1475075868003" duration="18273000" />
+      <workItem from="1475075868003" duration="18303000" />
     </task>
     <task id="LOCAL-00001" summary="Modif">
       <created>1475077884054</created>
@@ -425,7 +425,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18958000" />
+    <option name="totallyTimeSpent" value="18988000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
