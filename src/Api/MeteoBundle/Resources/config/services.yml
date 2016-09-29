@@ -1,4 +1,4 @@
 services:
-#    api_meteo.example:
-#        class: Api\MeteoBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    api_meteo.cache:
+        class: Api\MeteoBundle\Services\Cache
+        arguments: ["@service_container"]

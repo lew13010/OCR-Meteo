@@ -68,102 +68,28 @@ class DefaultController extends Controller
         $apiId = $this->getParameter('api_keys');
         $units = $this->getParameter('units');
         $langs = $this->getParameter('langs');
-
+        $ville = $city->getName();
+        $cache = $this->container->get('api_meteo.cache');
         $url = 'http://api.openweathermap.org/data/2.5/forecast/daily?id='.$city->getCityId().'&cnt=5&APPID='.$apiId.'&lang='.$langs.'&units='.$units;
 
-        $name = $city->getName();
-
-        $fichiers = scandir($this->get('kernel')->getCacheDir());
-        foreach ($fichiers as $fichier){
-            parse_str($fichier);
-            if(isset($v) && ($v === $city->getName())){
-                $name = $fichier;
-            }
-        }
-
-       // Reccupération de la route du cache
-        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $name;
-
-        //si le fichier existe
-        if(file_exists($filename)){
-            $file = unserialize(file_get_contents($filename));
-            $now = new \DateTime();
-            //si il a moins de 3 heures
-            if($now->diff($file['date'])->h > 3){
-                $content = file_get_contents($url);
-                $json = json_decode($content, true);
-
-                $lat = round($json['city']['coord']['lat'], 2);
-                $lon = round($json['city']['coord']['lon'], 2);
-                $this->createCache($city->getName(), $content, $lat, $lon);
-
-            }//si + de 3h on le recrée
-            else{
-                $json = json_decode($file['content']);
-            }
-        }//si il n'existe pas on le crée
-        else{
-            $content = file_get_contents($url);
-            $json = json_decode($content, true);
-
-            $lat = round($json['city']['coord']['lat'], 2);
-            $lon = round($json['city']['coord']['lon'], 2);
-            $this->createCache($city, $content, $lat, $lon);
-        }
+        $json = $cache->existCache($ville, $url);
 
         return $this->render('ApiMeteoBundle:Default:view.html.twig', array(
-            'city'  =>  $city,
+            'ville'  =>  $ville,
             'json'  =>  $json,
         ));
     }
 
     public function viewNameAction()
     {
-
         $ville = $_POST['city'];
         $apiId = $this->getParameter('api_keys');
         $units = $this->getParameter('units');
         $langs = $this->getParameter('langs');
-
+        $cache = $this->container->get('api_meteo.cache');
         $url = 'http://api.openweathermap.org/data/2.5/forecast/daily?q='.$ville.'&cnt=5&APPID='.$apiId.'&lang='.$langs.'&units='.$units;
 
-        $name = $ville;
-
-        $fichiers = scandir($this->get('kernel')->getCacheDir());
-        foreach ($fichiers as $fichier){
-            parse_str($fichier);
-            if(isset($v) && $v === $ville){
-                $name = $fichier;
-            }
-        }
-
-        // Reccupération de la route du cache
-        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $name;
-
-        if(file_exists($filename)){
-            $file = unserialize(file_get_contents($filename));
-            $now = new \DateTime();
-            //si il a moins de 3 heures
-            if($now->diff($file['date'])->h > 3){
-                $content = file_get_contents($url);
-                $json = json_decode($content, true);
-
-                $lat = round($json['city']['coord']['lat'], 2);
-                $lon = round($json['city']['coord']['lon'], 2);
-                $this->createCache($ville, $content, $lat, $lon);
-            }//si + de 3h on le recrée
-            else{
-                $json = json_decode($file['content']);
-            }
-        }//si il n'existe pas on le crée
-        else{
-            $content = file_get_contents($url);
-            $json = json_decode($content, true);
-
-            $lat = round($json['city']['coord']['lat'], 2);
-            $lon = round($json['city']['coord']['lon'], 2);
-            $this->createCache($ville, $content, $lat, $lon);
-        }
+        $json = $cache->existCache($ville, $url);
 
         $reponse = $this->render('ApiMeteoBundle:Default:view.html.twig', array(
             'ville'  =>  $ville,
@@ -177,55 +103,18 @@ class DefaultController extends Controller
         $apiId = $this->getParameter('api_keys');
         $units = $this->getParameter('units');
         $langs = $this->getParameter('langs');
-
+        $cache = $this->container->get('api_meteo.cache');
         $latitudeClean = round($latitude, 2);
         $longitudeClean = round($longitude, 2);
-
         $url = 'http://api.openweathermap.org/data/2.5/forecast/daily?lat='.$latitudeClean.'&lon='.$longitudeClean.'&cnt=5&APPID='.$apiId.'&lang='.$langs.'&units='.$units;
 
-        $name = 'qsdfboqsdf';
+        $json = $cache->existCache(null, $url, $latitudeClean, $longitudeClean);
+        if(is_array($json)){
+            $ville = $json['city']['name'];
 
-        $fichiers = scandir($this->get('kernel')->getCacheDir());
-        foreach ($fichiers as $fichier){
-            parse_str($fichier);
-            if(isset($lat) && $lat >= ($latitudeClean - 0.01) && $lat <= ($latitudeClean + 0.01) && $lon >= ($longitudeClean - 0.01) && $lon <= ($longitudeClean + 0.01)){
-                $name = $fichier;
-            }
+        }else{
+            $ville = $json->city->name;
         }
-
-        // Reccupération de la route du cache
-        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $name;
-
-        if(file_exists($filename)){
-            $file = unserialize(file_get_contents($filename));
-            $now = new \DateTime();
-            //si il a moins de 3 heures
-            if($now->diff($file['date'])->h > 3){
-                $content = file_get_contents($url);
-                $json = json_decode($content, true);
-
-                $city = $json['city']['name'];
-                $lat = round($json['city']['coord']['lat'], 2);
-                $lon = round($json['city']['coord']['lon'], 2);
-                $this->createCache($city, $content, $lat, $lon);
-            }//si + de 3h on le recrée
-            else{
-                $json = json_decode($file['content']);
-            }
-        }//si il n'existe pas on le crée
-        else{
-            $content = file_get_contents($url);
-            $json = json_decode($content, true);
-
-            $city = $json['city']['name'];
-            $lat = round($json['city']['coord']['lat'], 2);
-            $lon = round($json['city']['coord']['lon'], 2);
-            $this->createCache($city, $content, $lat, $lon);
-        }
-
-        $content = file_get_contents($url);
-        $json = json_decode($content, true);
-        $ville = $json['city']['name'];
 
         $reponse = $this->render('ApiMeteoBundle:Default:view.html.twig', array(
             'ville'  =>  $ville,
@@ -233,33 +122,5 @@ class DefaultController extends Controller
         ));
 
         return $reponse;
-    }
-
-    public function createCache($city, $content, $lat, $lon)
-    {
-        $filename = $this->get('kernel')->getCacheDir() . DIRECTORY_SEPARATOR . 'v=' . $city . '&lat=' . $lat . '&lon=' . $lon;
-        $date = new \DateTime();
-        $file = array(
-            'date'      => $date,
-            'content'   => $content
-        );
-        file_put_contents($filename, serialize($file));
-        return $file;
-    }
-
-    public function updateeCache($city, $content)
-    {
-        $filename = $this->get('kernel')->getCacheDir(). DIRECTORY_SEPARATOR . $city;
-        $date = new \DateTime();
-        $file = file_get_contents($filename);
-
-        $file = array(
-            $city => array(
-                'date'      => $date,
-                'content'   => $content
-            )
-        );
-        file_put_contents($filename, serialize($file));
-        return $file;
     }
 }
