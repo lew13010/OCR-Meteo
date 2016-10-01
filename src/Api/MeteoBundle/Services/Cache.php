@@ -51,7 +51,7 @@ class Cache
                 $content = file_get_contents($url);
                 $json = json_decode($content, true);
                 if (null === $ville){
-                    $ville = $json->city->name;
+                    $ville = $json['city']['name'];
                 }
 
                 $lat = round($json['city']['coord']['lat'], 2);
